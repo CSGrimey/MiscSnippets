@@ -1,37 +1,22 @@
 ﻿namespace MiscSnippets.Code.DataStructures {
-    class Node {
-        Node next = null;
-        int data;
+    public class Node<T> {
+        private NodeList<T> neighbours;
 
-        public Node(int d) {
-            data = d;
+        public T Data { get; set; }
+
+        protected NodeList<T> Neighbours {
+            get { return neighbours; }
+            set { neighbours = value; }
         }
 
-        public void AppendToTail(int d) {
-            Node end = new Node(d);
-            Node n = this;
+        public Node() { }
 
-            while (n.next != null) n = n.next;
-            
-            n.next = end;
-        }
+        public Node(T data) : this(data, null) { }
 
-        public Node Delete(Node head, int d) {
-            Node n = head;
+        public Node(T data, NodeList<T> neighbours) {
+            Data = data;
 
-            if (n.data == d) return head.next;  // Moved head.
-
-            while (n.next != null) {
-                if (n.next.data == d) {
-                    n.next = n.next.next;
-
-                    return head;    // Head didn't change.
-                }
-
-                n = n.next;
-            }
-
-            return n;
+            this.neighbours = neighbours;
         }
     }
 }
