@@ -53,6 +53,7 @@
     <Compile Include="Code\DataStructures\Node.cs" />
     <Compile Include="Code\DataStructures\NodeList.cs" />
     <Compile Include="Code\DataStructures\Queue.cs" />
+    <Compile Include="Code\DesignPatterns\Singleton.cs" />
     <Compile Include="Code\Exercises\ArrayAndStringsExercises.cs" />
     <Compile Include="Code\Exercises\LinkedListsExercises.cs" />
     <Compile Include="Program.cs" />
