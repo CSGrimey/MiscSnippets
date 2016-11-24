@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace MiscSnippets.Tests {
     [TestFixture]
-    class ArraysAndStringsExercisesTests {
+    public class ArraysAndStringsExercisesTests {
         ArrayAndStringsExercises exercises = new ArrayAndStringsExercises();
 
         [Test]
