@@ -1,4 +1,6 @@
-﻿namespace MiscSnippets.Code.Algorithms {
+﻿using System;
+
+namespace MiscSnippets.Code.Algorithms {
     public class Search {
         public static int ValueNotFound { get; } = -1;
 
@@ -8,17 +10,18 @@
                 if (input[0] == value) return 0;
                 else return ValueNotFound;
             } else {
-                int currentIndex = input.Length / 2;
+                int start = 0;
+                int end = input.Length - 1;
 
                 while (true) {
+                    int currentIndex = (start + end) / 2;
+
                     int currentValue = input[currentIndex];
 
-                    if (currentValue > value) currentIndex = currentIndex / 2;
-                    else if (currentValue < value) currentIndex += (input.Length - currentIndex) / 2;
-                    else {
-                        if (currentValue == value) return currentIndex;
-                        else return ValueNotFound;
-                    }
+                    if (start > end) return ValueNotFound;
+                    else if (value < currentValue) end = currentIndex - 1;
+                    else if (value > currentValue) start = currentIndex + 1;
+                    else return currentIndex;
                 }
             }
         }
