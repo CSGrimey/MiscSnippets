@@ -13,5 +13,12 @@ namespace MiscSnippets.Tests {
 
             Assert.AreEqual(expectedResult, exercises.MultiplicationTable(5));
         }
+
+        [Test]
+        public void ShouldReverseString() {
+            const string expectedResult = "madA m'I ,madaM";
+
+            Assert.AreEqual(expectedResult, exercises.StringReversal("Madam, I'm Adam"));
+        }
     }
 }
