@@ -56,11 +56,13 @@
     <Compile Include="Code\DesignPatterns\Singleton.cs" />
     <Compile Include="Code\Exercises\ArrayAndStringsExercises.cs" />
     <Compile Include="Code\Exercises\LinkedListsExercises.cs" />
+    <Compile Include="Code\Exercises\MiscExercises.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\AlgorithmsTests.cs" />
     <Compile Include="Tests\ArraysAndStringsExercisesTests.cs" />
     <Compile Include="Tests\LinkedListsTests.cs" />
+    <Compile Include="Tests\MiscTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
