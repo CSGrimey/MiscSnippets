@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Linq;
 
 namespace MiscSnippets.Code.Exercises {
     class MiscExercises {
@@ -30,5 +31,7 @@ namespace MiscSnippets.Code.Exercises {
 
             return result.ToString();
         }
+
+        public int LargestValueInIntArray(int[] input) => input.OrderBy(i => i).Last();
     }
 }

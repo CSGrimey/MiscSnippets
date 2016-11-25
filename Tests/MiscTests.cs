@@ -27,5 +27,12 @@ namespace MiscSnippets.Tests {
 
             Assert.AreEqual(expectedResult, exercises.PrintOddNumbers(16));
         }
+
+        [Test]
+        public void ShouldReturnLargestValueInIntArray() {
+            int[] input = { 2, 1, 4, 5, 2, 1, 0, 9, 2, 4 };
+
+            Assert.AreEqual(9, exercises.LargestValueInIntArray(input));
+        }
     }
 }
