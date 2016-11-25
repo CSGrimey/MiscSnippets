@@ -20,5 +20,12 @@ namespace MiscSnippets.Tests {
 
             Assert.AreEqual(expectedResult, exercises.StringReversal("Madam, I'm Adam"));
         }
+
+        [Test]
+        public void ShouldOnlyPrintOddNumbers() {
+            const string expectedResult = "1,3,5,7,9,11,13,15,";
+
+            Assert.AreEqual(expectedResult, exercises.PrintOddNumbers(16));
+        }
     }
 }

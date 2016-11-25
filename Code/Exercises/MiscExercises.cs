@@ -22,5 +22,13 @@ namespace MiscSnippets.Code.Exercises {
 
             return reversedInput.ToString();
         }
+
+        public string PrintOddNumbers(int input) {
+            StringBuilder result = new StringBuilder();
+
+            for (int i = 1; i < input; i++) if (i % 2 == 1) result.Append(i.ToString() + ",");
+
+            return result.ToString();
+        }
     }
 }
