@@ -32,6 +32,18 @@ namespace MiscSnippets.Code.Exercises {
             return result.ToString();
         }
 
-        public int LargestValueInIntArray(int[] input) => input.OrderBy(i => i).Last();
+        public int LargestValueInIntArrayLinq(int[] input) => input.Max();
+
+        public int LargestValueInIntArray(int[] input) {
+            int highestValue = 0;
+
+            for (int index = 0; index < input.Length - 1; index++) {
+                int currentValue = input[index];
+
+                if (currentValue > highestValue) highestValue = currentValue;
+            }
+
+            return highestValue;
+        }
     }
 }
