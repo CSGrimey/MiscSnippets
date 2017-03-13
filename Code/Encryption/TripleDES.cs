@@ -1,79 +1,63 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace MiscSnippets.Code.Encryption {
     public class TripleDES {
-        public const string _encryptedFilePrefix = "encrypted_";
+        private byte[] GetKey() => Encoding.ASCII.GetBytes(ConfigurationSettings.AppSettings["filesEncryptionKey"]);
+
+        private byte[] GetInitialisationVector() => Encoding.ASCII.GetBytes(ConfigurationSettings.AppSettings["filesInitialisationVector"]);
 
         public void Encrypt(string inputFileName, string outputFileName) {
-            byte[] key = Encoding.ASCII.GetBytes(ConfigurationSettings.AppSettings["filesEncryptionKey"]);
-            byte[] initialisationVector = Encoding.ASCII.GetBytes(ConfigurationSettings.AppSettings["filesInitialisationVector"]);
-
-            Encrypt(inputFileName, outputFileName, key, initialisationVector);
+            Encrypt(inputFileName, outputFileName, GetKey(), GetInitialisationVector());
         }
 
         public void Encrypt(Stream inputStream, string outputFileName) {
-            FileStream outputFileStream = new FileStream(outputFileName, FileMode.OpenOrCreate, FileAccess.Write);
+            var outputFileStream = new FileStream(outputFileName, FileMode.OpenOrCreate, FileAccess.Write);
 
             outputFileStream.SetLength(0);
 
-            byte[] key = Encoding.ASCII.GetBytes(ConfigurationSettings.AppSettings["filesEncryptionKey"]);
-            byte[] initialisationVector = Encoding.ASCII.GetBytes(ConfigurationSettings.AppSettings["filesInitialisationVector"]);
-
-            Transform(inputStream, outputFileStream, key, initialisationVector, new TripleDESCryptoServiceProvider().CreateEncryptor);
+            Transform(inputStream, outputFileStream, new TripleDESCryptoServiceProvider().CreateEncryptor(GetKey(), GetInitialisationVector()));
         }
 
-        public void Encrypt(string inputFileName, string outputFileName, byte[] key, byte[] initialisationVector) {
-            FileStream inputFileStream = new FileStream(inputFileName, FileMode.Open, FileAccess.Read);
-            FileStream outputFileStream = new FileStream(outputFileName, FileMode.OpenOrCreate, FileAccess.Write);
+        private void Encrypt(string inputFileName, string outputFileName, byte[] key, byte[] initialisationVector) {
+            var inputFileStream = new FileStream(inputFileName, FileMode.Open, FileAccess.Read);
+            var outputFileStream = new FileStream(outputFileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
 
             outputFileStream.SetLength(0);
 
-            Transform(inputFileStream, outputFileStream, key, initialisationVector, new TripleDESCryptoServiceProvider().CreateEncryptor);
+            Transform(inputFileStream, outputFileStream, new TripleDESCryptoServiceProvider().CreateEncryptor(key, initialisationVector));
         }
 
-        private void Transform(Stream inputFileStream, Stream outputFileStream, byte[] key, byte[] initialisationVector,
-            Func<byte[], byte[], ICryptoTransform> transformerCreationFunc) {
-            byte[] immediateEncryptionStorage = new byte[100];
-
+        private void Transform(Stream inputFileStream, Stream outputFileStream, ICryptoTransform cryptoTransformer) {
+            byte[] immediateEncryptionStorage = new byte[1000];
             int numberOfBytesToWriteAtATime = 0;
             long totalBytesWritten = 0;
-
-            long inputFileSize = inputFileStream.Length;
             const int offset = 0;
 
-            TripleDESCryptoServiceProvider cryptoServiceProvider = new TripleDESCryptoServiceProvider();
-
-            ICryptoTransform transformer = transformerCreationFunc(key, initialisationVector);
-
-            using (var encStream = new CryptoStream(outputFileStream, transformer, CryptoStreamMode.Write)) {
-                while (totalBytesWritten < inputFileSize) {
+            using (var cryptoStream = new CryptoStream(outputFileStream, cryptoTransformer, CryptoStreamMode.Write)) {
+                while (totalBytesWritten < inputFileStream.Length) {
                     numberOfBytesToWriteAtATime = inputFileStream.Read(immediateEncryptionStorage, offset, count: 100);
 
-                    encStream.Write(immediateEncryptionStorage, offset, numberOfBytesToWriteAtATime);
+                    cryptoStream.Write(immediateEncryptionStorage, offset, numberOfBytesToWriteAtATime);
 
-                    totalBytesWritten = totalBytesWritten + numberOfBytesToWriteAtATime;
+                    totalBytesWritten += numberOfBytesToWriteAtATime;
                 }
             }
         }
 
         public void Decrypt(string inputFileName, string outputFileName) {
-            byte[] key = Encoding.ASCII.GetBytes(ConfigurationSettings.AppSettings["filesEncryptionKey"]);
-            byte[] initialisationVector = Encoding.ASCII.GetBytes(ConfigurationSettings.AppSettings["filesInitialisationVector"]);
-
-            Decrypt(inputFileName, outputFileName, key, initialisationVector);
+            Decrypt(inputFileName, outputFileName, GetKey(), GetInitialisationVector());
         }
 
-        public void Decrypt(string inputFileName, string outputFileName, byte[] key, byte[] initialisationVector) {
-            FileStream inputFileStream = new FileStream(inputFileName, FileMode.Open, FileAccess.Read);
-            FileStream outputFileStream = new FileStream(outputFileName, FileMode.OpenOrCreate, FileAccess.Write);
+        private void Decrypt(string inputFileName, string outputFileName, byte[] key, byte[] initialisationVector) {
+            var inputFileStream = new FileStream(inputFileName, FileMode.Open, FileAccess.Read);
+            var outputFileStream = new FileStream(outputFileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
 
             outputFileStream.SetLength(0);
 
-            Transform(inputFileStream, outputFileStream, key, initialisationVector, new TripleDESCryptoServiceProvider().CreateDecryptor);
+            Transform(inputFileStream, outputFileStream, new TripleDESCryptoServiceProvider().CreateDecryptor(key, initialisationVector));
         }
     }
 }
