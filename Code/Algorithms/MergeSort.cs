@@ -1,6 +1,10 @@
 ﻿namespace MiscSnippets.Code.Algorithms {
-   public class MergeSorter {
-        public List<T> MergeSort<T>(List<T> values) where T : IComparable<T> {
+   public interface Sorter {
+        List<T> Sort<T>(List<T> values) where T : IComparable<T>;
+    }
+
+    public class MergeSorter : Sorter  {
+        public List<T> Sort<T>(List<T> values) where T : IComparable<T> {
             int middleIndex = values.Count() / 2;
 
             if (middleIndex == 0) return values;
@@ -8,7 +12,7 @@
                 List<T> leftSide = values.Take(middleIndex).ToList();
                 List<T> rightSide = values.Skip(middleIndex).ToList();
 
-                return Merge(MergeSort(leftSide), MergeSort(rightSide));
+                return Merge(Sort(leftSide), Sort(rightSide));
             }
         }
 
