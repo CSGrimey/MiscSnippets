@@ -1,12 +1,12 @@
 ﻿namespace MiscSnippets.Code.Algorithms {
    public class MergeSorter {
         public List<T> MergeSort<T>(List<T> values) where T : IComparable<T> {
-            int n = values.Count() / 2;
+            int middleIndex = values.Count() / 2;
 
-            if (n == 0) return values;
+            if (middleIndex == 0) return values;
             else {
-                List<T> leftSide = values.Take(n).ToList();
-                List<T> rightSide = values.Skip(n).ToList();
+                List<T> leftSide = values.Take(middleIndex).ToList();
+                List<T> rightSide = values.Skip(middleIndex).ToList();
 
                 return Merge(MergeSort(leftSide), MergeSort(rightSide));
             }
