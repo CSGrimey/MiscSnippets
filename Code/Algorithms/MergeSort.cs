@@ -1,5 +1,5 @@
 ﻿namespace MiscSnippets.Code.Algorithms {
-    public class MergeSorter {
+   public class MergeSorter {
         public List<T> MergeSort<T>(List<T> values) where T : IComparable<T> {
             int n = values.Count() / 2;
 
@@ -16,8 +16,18 @@
             if (leftSide.Any() && rightSide.Any() == false) return leftSide;
             else if (leftSide.Any() == false && rightSide.Any()) return rightSide;
             else {
-                if (leftSide.ElementAt(0).CompareTo(rightSide.ElementAt(0)) < 0) return new List<T> { leftSide.ElementAt(0) }.Concat(Merge(leftSide.Skip(1).ToList(), rightSide)).ToList();
-                else return new List<T> { rightSide.ElementAt(0) }.Concat(Merge(rightSide.Skip(1).ToList(), leftSide)).ToList();
+                T leftHead = leftSide[0];
+                T rightHead = rightSide[0];
+
+                if (leftHead.CompareTo(rightHead) < 0) {
+                    List<T> leftTail = leftSide.Skip(1).ToList();
+
+                    return new List<T> { leftHead }.Concat(Merge(leftTail, rightSide)).ToList();
+                } else {
+                    List<T> rightTail = rightSide.Skip(1).ToList();
+
+                    return new List<T> { rightHead }.Concat(Merge(rightTail, leftSide)).ToList();
+                }
             }
         }
     }
