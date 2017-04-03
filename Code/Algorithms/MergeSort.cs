@@ -1,9 +1,5 @@
 ﻿namespace MiscSnippets.Code.Algorithms {
-   public interface Sorter {
-        List<T> Sort<T>(List<T> values) where T : IComparable<T>;
-    }
-
-    public class MergeSorter : Sorter  {
+    public class MergeSorter : ISorter  {
         public List<T> Sort<T>(List<T> values) where T : IComparable<T> {
             int middleIndex = values.Count() / 2;
 
